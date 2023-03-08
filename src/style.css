@@ -6,4 +6,103 @@ html {
 
 *, *::after, *::before {
   box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  display: grid;
+  grid-template-columns: 1.2fr 2fr 2fr;
+  grid-template-rows: 1fr 3fr 3fr;
+  min-height: 100vh;
+}
+
+img {
+  pointer-events: none;
+}
+
+header {
+  background-color: #3D74B8;
+  padding: 10px;
+  grid-column: 1 / 4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+#header-text {
+  font-size: 45px;
+}
+
+#todo-header-icon {
+  width: 60px;
+}
+
+aside {
+  grid-row: 2 / 4;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.aside-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 15px;
+  font-weight: 300;
+  cursor: pointer;
+}
+
+.aside-btn:hover {
+  background-color: #CAE9F5;
+}
+
+.active-btn {
+  font-weight: 500;
+}
+
+.aside-filter,
+.calendar-projects  {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.calendar-icon,
+.project-icon {
+  width: 35px;
+}
+
+#aside-divider {
+  border: 10px solid #ADD8E6;
+  border-radius: 5px;
+}
+
+#add-project {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 300;
+  cursor: pointer;
+}
+
+#add-project:hover {
+  background-color: #fff;
+  border: 4px dotted #8cff98;
+  background-clip: padding-box;
+
+}
+
+#projects-text {
+  font-size: 28px;
+  font-weight: 300;
+}
+
+main {
+  grid-column:  2 / 4;
+  grid-row: 2 / 4;
 }
