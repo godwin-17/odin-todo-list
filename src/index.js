@@ -1,12 +1,31 @@
 import '../src/style.css';
+import {Todo, Project, AllProjects} from './modules/classes.js';
+import {asideBtns, addProject, projectPopup, closeProjectPopup, addTodo, todoPopup, closeTodoPopup, calendarProjects, sidebar, main, projectInput, todoInputTitle, todoInputDescription, todoInputDate} from './modules/dom.js';
 
-const asideBtns = document.querySelectorAll(".aside-btn");
-const addProject = document.querySelector("#add-project");
-const projectPopup = document.querySelector("#project-popup");
-const closeProjectPopup = document.querySelector("#close-popup");
-const addTodo = document.querySelector("#add-todo");
-const todoPopup = document.querySelector("#todo-popup");
-const closeTodoPopup = document.querySelector("#close-todo");
+const allProjects = new AllProjects(); // Creating an Array of all projects
+
+let currentProject = null;
+
+// Set Data Attribute
+function setDataAttribute() {
+  const projects = document.querySelectorAll(".project-item");
+  projects.forEach(project => {
+    project.dataset.project = project.textContent;
+  });
+}
+
+setDataAttribute();
+
+// Set Current project
+sidebar.addEventListener("click", e => {
+  if (e.target.classList.contains('project-item')) {
+    const project = e.target.dataset.project;
+
+    currentProject = project;
+
+    console.log(`Current project: ${currentProject}`);
+  }
+});
 
 asideBtns.forEach(btn => {
   btn.addEventListener("click", () => {
@@ -24,9 +43,24 @@ addProject.addEventListener("click", () => {
   projectPopup.style.display = "block";
 });
 
+// TO CREATE A PROJECT
 projectPopup.addEventListener("submit", e => {
   e.preventDefault();
-  // -------------------------------
+
+  const myProject = new Project(projectInput.value);
+  allProjects.addProject(myProject);
+
+  const newProject = document.createElement("div");
+  newProject.classList.add("project-item");
+  newProject.innerHTML = `${myProject.name}`;
+
+  currentProject = myProject.name;
+
+  calendarProjects.insertAdjacentElement("afterend", newProject);
+  console.log("Project Created", myProject);
+  console.log("CURRENT", currentProject);
+  
+  setDataAttribute();
   projectPopup.style.display = "none";
 });
 
@@ -38,9 +72,38 @@ addTodo.addEventListener("click", () => {
   todoPopup.style.display = "block";
 });
 
+// TO CREATE A TODO
 todoPopup.addEventListener("submit", e => {
   e.preventDefault();
-  // -------------------
+
+  if (!currentProject) {
+    alert("Can't create a todo, no project selected.");
+    return;
+  }
+
+  const project = allProjects.projects.find(p => p.name === currentProject);
+
+  const todo = new Todo(todoInputTitle.value, todoInputDescription.value, todoInputDate.value, project);
+  project.addTodo(todo); // Add the todo to the project
+
+  main.innerHTML += `
+  <div class="todo-item">
+    <div class="todo-details">
+      <div class="todo-title">${todo.title}</div>
+      <div class="todo-description">${todo.description}</div>
+    </div>
+
+    <div class="todo-details-2">
+      <input type="date" name="todo-date" class="todo-date" value=${todo.date}>
+
+      <div class="delete-todo">
+        &times;
+      </div>
+    </div>
+  </div>
+  `;
+  console.log("Todo", todo);
+
   todoPopup.style.display = "none";
 });
 
