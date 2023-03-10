@@ -73,7 +73,8 @@ aside {
 }
 
 .calendar-icon,
-.project-icon {
+.project-icon,
+.todo-icon {
   width: 35px;
 }
 
@@ -82,7 +83,8 @@ aside {
   border-radius: 5px;
 }
 
-#add-project {
+#add-project,
+#add-todo {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -194,4 +196,53 @@ main {
 
 .delete-todo {
   font-size: 20px;
+}
+
+
+#todo-popup {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+}
+
+#todo-popup label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+#todo-popup input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+}
+
+#todo-popup button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+#todo-form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+#close-todo {
+  position: absolute;
+  right: 15px;
+  top: 8px;
+  cursor: pointer;
+  font-size: 28px;
 }
