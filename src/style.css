@@ -102,6 +102,54 @@ aside {
   font-weight: 300;
 }
 
+#project-popup {
+  display: none;
+}
+
+#project-from {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+#project-popup input[type="text"] {
+  width: 90%;
+  border: none;
+  padding: 10px 15px;
+  border-bottom: 2px solid #000066;
+  font-size: 16px;
+}
+
+#project-popup input[type="text"]:focus {
+  outline: none;
+}
+
+#project-popup input[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+#project-btns {
+  display: flex;
+  width: 50%;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+#close-popup {
+  background-color: #ff0000;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
 main {
   grid-column:  2 / 4;
   grid-row: 2 / 4;
