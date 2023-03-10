@@ -3,7 +3,10 @@ import '../src/style.css';
 const asideBtns = document.querySelectorAll(".aside-btn");
 const addProject = document.querySelector("#add-project");
 const projectPopup = document.querySelector("#project-popup");
-const closeProject = document.querySelector("#close-popup");
+const closeProjectPopup = document.querySelector("#close-popup");
+const addTodo = document.querySelector("#add-todo");
+const todoPopup = document.querySelector("#todo-popup");
+const closeTodoPopup = document.querySelector("#close-todo");
 
 asideBtns.forEach(btn => {
   btn.addEventListener("click", () => {
@@ -27,6 +30,20 @@ projectPopup.addEventListener("submit", e => {
   projectPopup.style.display = "none";
 });
 
-closeProject.addEventListener("click", () => {
+closeProjectPopup.addEventListener("click", () => {
   projectPopup.style.display = "none";
-})
+});
+
+addTodo.addEventListener("click", () => {
+  todoPopup.style.display = "block";
+});
+
+todoPopup.addEventListener("submit", e => {
+  e.preventDefault();
+  // -------------------
+  todoPopup.style.display = "none";
+});
+
+closeTodoPopup.addEventListener("click", () => {
+  todoPopup.style.display = "none";
+});
