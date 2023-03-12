@@ -91,34 +91,36 @@ projectPopup.addEventListener("submit", e => {
 
   console.log(allProjects);
 
-  // Check if the project already exists
-  allProjects.projects.forEach(project => {
-    if (project.name === projectInput.value) {
-      alert("Project already exists!!!");
-      return;
-    } else {
-      const myProject = new Project(projectInput.value);
-      allProjects.addProject(myProject);
-    
-      const newProject = document.createElement("div");
-      newProject.classList.add("project-item");
-      newProject.innerHTML = `${myProject.name}`;
-    
-      setCurrentProject(myProject);
-    
-      calendarProjects.insertAdjacentElement("afterend", newProject);
-      console.log("Project Created", myProject);
-      console.log("CURRENT", currentProject);
-      
-      setDataAttribute();
-    
-      todoItemsContainer.innerHTML = "";
-    
-      mainTitleText.textContent = myProject.name;
-    
-      projectPopup.style.display = "none";
-    }
+  const projectExists = allProjects.projects.some(project => {
+    return project.name === projectInput.value;
   });
+
+  if (projectExists) {
+    alert("Project already exists!!!");
+    return;
+  }
+
+  const myProject = new Project(projectInput.value);
+  allProjects.addProject(myProject);
+
+  const newProject = document.createElement("div");
+  newProject.classList.add("project-item");
+  newProject.innerHTML = `${myProject.name}`;
+
+  setCurrentProject(myProject);
+
+  calendarProjects.insertAdjacentElement("afterend", newProject);
+  console.log("Project Created", myProject);
+  console.log("CURRENT", currentProject);
+
+  setDataAttribute();
+
+  todoItemsContainer.innerHTML = "";
+
+  mainTitleText.textContent = myProject.name;
+
+  projectPopup.style.display = "none";
+  alert("Project created successfully!");
 });
 
 closeProjectPopup.addEventListener("click", () => {
