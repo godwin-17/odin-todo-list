@@ -89,10 +89,14 @@ addProject.addEventListener("click", () => {
 projectPopup.addEventListener("submit", e => {
   e.preventDefault();
 
+  if (projectInput.value.trim() === "") {
+    alert("Project name can't be empty");
+    return;
+  }
   console.log(allProjects);
 
   const projectExists = allProjects.projects.some(project => {
-    return project.name === projectInput.value;
+    return project.name.trim() === projectInput.value.trim();
   });
 
   if (projectExists) {
