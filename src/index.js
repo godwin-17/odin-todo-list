@@ -26,7 +26,7 @@ displayDefaultProject();
 
 function displayDefaultTodo(defaultTodo) {
   todoItemsContainer.innerHTML += `
-  <div class="todo-item">
+  <div class="todo-item" data-todo-id=${defaultTodo.id}>
     <div class="todo-details">
       <div class="todo-title">${defaultTodo.title}</div>
       <div class="todo-description">${defaultTodo.description}</div>
@@ -146,7 +146,7 @@ todoPopup.addEventListener("submit", e => {
   project.addTodo(todo); // Add the todo to the project
 
   todoItemsContainer.innerHTML += `
-  <div class="todo-item">
+  <div class="todo-item" data-todo-id=${todo.id}>
     <div class="todo-details">
       <div class="todo-title">${todo.title}</div>
       <div class="todo-description">${todo.description}</div>
@@ -163,6 +163,24 @@ todoPopup.addEventListener("submit", e => {
   console.log("Todo", todo);
 
   todoPopup.style.display = "none";
+});
+
+// Delete todo
+todoItemsContainer.addEventListener("click", e => {
+
+  const deleteButton = e.target.closest(".delete-todo");
+  console.log("DELETE BUTTON", deleteButton);
+  if (deleteButton) {
+  const todoItem = deleteButton.closest(".todo-item");
+  const clickedTodoId = parseInt(todoItem.getAttribute("data-todo-id"));
+  const project = allProjects.projects.find(p => p.name === currentProject);
+  const clickedTodo = project.todos.find(todo => todo.id === clickedTodoId);
+  project.removeTodo(clickedTodo);
+
+  todoItem.remove();
+  console.log("PROJECT", project);
+  }
+
 });
 
 closeTodoPopup.addEventListener("click", () => {
