@@ -252,3 +252,8 @@ main {
   flex-direction: column;
   gap: 10px;
 }
+
+.delete-todo {
+  cursor: pointer;
+  user-select: none;
+}
