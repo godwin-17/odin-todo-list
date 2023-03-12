@@ -1,6 +1,6 @@
 import '../src/style.css';
 import {Todo, Project, AllProjects} from './modules/classes.js';
-import {asideBtns, addProject, projectPopup, closeProjectPopup, addTodo, todoPopup, closeTodoPopup, calendarProjects, sidebar, main, projectInput, todoInputTitle, todoInputDescription, todoInputDate} from './modules/dom.js';
+import {asideBtns, addProject, projectPopup, closeProjectPopup, addTodo, todoPopup, closeTodoPopup, calendarProjects, sidebar, main, todoItemsContainer, projectInput, todoInputTitle, todoInputDescription, todoInputDate, mainTitleText} from './modules/dom.js';
 
 const allProjects = new AllProjects(); // Creating an Array of all projects
 
@@ -9,7 +9,7 @@ const DefaultProject = new Project("Default");
 const DefaultTodo = new Todo("Example", "This is an example of a todo.", "2023-03-11", DefaultProject);
 DefaultProject.addTodo(DefaultTodo);
 allProjects.addProject(DefaultProject);
-
+mainTitleText.textContent = "Default";
 
 let currentProject = null;
 
@@ -25,7 +25,7 @@ function displayDefaultProject() {
 displayDefaultProject();
 
 function displayDefaultTodo(defaultTodo) {
-  main.innerHTML += `
+  todoItemsContainer.innerHTML += `
   <div class="todo-item">
     <div class="todo-details">
       <div class="todo-title">${defaultTodo.title}</div>
@@ -89,21 +89,36 @@ addProject.addEventListener("click", () => {
 projectPopup.addEventListener("submit", e => {
   e.preventDefault();
 
-  const myProject = new Project(projectInput.value);
-  allProjects.addProject(myProject);
+  console.log(allProjects);
 
-  const newProject = document.createElement("div");
-  newProject.classList.add("project-item");
-  newProject.innerHTML = `${myProject.name}`;
-
-  setCurrentProject(myProject);
-
-  calendarProjects.insertAdjacentElement("afterend", newProject);
-  console.log("Project Created", myProject);
-  console.log("CURRENT", currentProject);
-  
-  setDataAttribute();
-  projectPopup.style.display = "none";
+  // Check if the project already exists
+  allProjects.projects.forEach(project => {
+    if (project.name === projectInput.value) {
+      alert("Project already exists!!!");
+      return;
+    } else {
+      const myProject = new Project(projectInput.value);
+      allProjects.addProject(myProject);
+    
+      const newProject = document.createElement("div");
+      newProject.classList.add("project-item");
+      newProject.innerHTML = `${myProject.name}`;
+    
+      setCurrentProject(myProject);
+    
+      calendarProjects.insertAdjacentElement("afterend", newProject);
+      console.log("Project Created", myProject);
+      console.log("CURRENT", currentProject);
+      
+      setDataAttribute();
+    
+      todoItemsContainer.innerHTML = "";
+    
+      mainTitleText.textContent = myProject.name;
+    
+      projectPopup.style.display = "none";
+    }
+  });
 });
 
 closeProjectPopup.addEventListener("click", () => {
@@ -128,7 +143,7 @@ todoPopup.addEventListener("submit", e => {
   const todo = new Todo(todoInputTitle.value, todoInputDescription.value, todoInputDate.value, project);
   project.addTodo(todo); // Add the todo to the project
 
-  main.innerHTML += `
+  todoItemsContainer.innerHTML += `
   <div class="todo-item">
     <div class="todo-details">
       <div class="todo-title">${todo.title}</div>
@@ -142,8 +157,7 @@ todoPopup.addEventListener("submit", e => {
         &times;
       </div>
     </div>
-  </div>
-  `;
+  </div>`;
   console.log("Todo", todo);
 
   todoPopup.style.display = "none";
@@ -151,4 +165,32 @@ todoPopup.addEventListener("submit", e => {
 
 closeTodoPopup.addEventListener("click", () => {
   todoPopup.style.display = "none";
+});
+
+// Filter Projects Todos
+sidebar.addEventListener("click", e => {
+  if (e.target.classList.contains("project-item")) {
+
+    const project = allProjects.projects.find(p => p.name === currentProject);
+
+    mainTitleText.textContent = project.name;
+    todoItemsContainer.innerHTML = "";
+
+    project.todos.forEach(todo => {
+      todoItemsContainer.innerHTML += `<div class="todo-item">
+      <div class="todo-details">
+        <div class="todo-title">${todo.title}</div>
+        <div class="todo-description">${todo.description}</div>
+      </div>
+  
+      <div class="todo-details-2">
+        <input type="date" name="todo-date" class="todo-date" value=${todo.date}>
+  
+        <div class="delete-todo">
+          &times;
+        </div>
+      </div>
+    </div>`;
+    });
+  }
 });
