@@ -120,6 +120,7 @@ projectPopup.addEventListener("submit", e => {
   mainTitleText.textContent = myProject.name;
 
   projectPopup.style.display = "none";
+  projectInput.value = "";
   alert("Project created successfully!");
 });
 
@@ -163,6 +164,9 @@ todoPopup.addEventListener("submit", e => {
   console.log("Todo", todo);
 
   todoPopup.style.display = "none";
+  todoInputTitle.value = "";
+  todoInputDescription.value = "";
+  todoInputDate.value = "";
 });
 
 // Delete todo
