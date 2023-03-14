@@ -1,6 +1,6 @@
 import '../src/style.css';
 import {Todo, Project, AllProjects} from './modules/classes.js';
-import {asideBtns, addProject, projectPopup, closeProjectPopup, addTodo, todoPopup, closeTodoPopup, calendarProjects, sidebar, main, todoItemsContainer, projectInput, todoInputTitle, todoInputDescription, todoInputDate, mainTitleText} from './modules/dom.js';
+import {asideBtns, addProject, projectPopup, closeProjectPopup, addTodo, todoPopup, closeTodoPopup, calendarProjects, sidebar, main, todoItemsContainer, projectInput, todoInputTitle, todoInputDescription, todoInputDate, mainTitleText, deleteProjectButton} from './modules/dom.js';
 
 const allProjects = new AllProjects(); // Creating an Array of all projects
 
@@ -126,6 +126,23 @@ projectPopup.addEventListener("submit", e => {
   projectPopup.style.display = "none";
   projectInput.value = "";
   alert("Project created successfully!");
+});
+
+// TO DELETE A PROJECT
+deleteProjectButton.addEventListener("click", () => {
+  if (!currentProject) {
+    alert("No project selected!");
+    return;
+  }
+
+  const project = allProjects.projects.find(p => p.name === currentProject);
+  allProjects.removeProject(project);
+
+  document.querySelector(`[data-project=${currentProject}]`).remove();
+  
+  mainTitleText.textContent = "";
+  todoItemsContainer.innerHTML = "";
+  currentProject = null;
 });
 
 closeProjectPopup.addEventListener("click", () => {
