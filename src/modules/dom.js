@@ -10,9 +10,10 @@ const sidebar = document.querySelector("aside");
 const main = document.querySelector("main");
 const todoItemsContainer = document.querySelector(".todo-items-container");
 const mainTitleText = document.querySelector(".main-title-text");
+const deleteProjectButton = document.querySelector("#delete-project-button");
 const projectInput = document.querySelector("#project");
 const todoInputTitle = document.querySelector("#title");
 const todoInputDescription = document.querySelector("#description");
 const todoInputDate = document.querySelector("#date");
 
-export { asideBtns, addProject, projectPopup, closeProjectPopup, addTodo, todoPopup, closeTodoPopup, calendarProjects, sidebar, main, todoItemsContainer, mainTitleText, projectInput, todoInputTitle, todoInputDescription, todoInputDate };
+export { asideBtns, addProject, projectPopup, closeProjectPopup, addTodo, todoPopup, closeTodoPopup, calendarProjects, sidebar, main, todoItemsContainer, mainTitleText, deleteProjectButton, projectInput, todoInputTitle, todoInputDescription, todoInputDate };
