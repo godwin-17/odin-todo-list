@@ -257,3 +257,20 @@ main {
   cursor: pointer;
   user-select: none;
 }
+
+#delete-project-button {
+  padding: 15px 24px;
+  color: #000000;
+  border: 2px solid #F44336;
+  background-color: #ffffff;
+  transition-duration: 0.8s;
+  font-size: 17px;
+  align-self: center;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+#delete-project-button:hover {
+  background-color: #F44336;
+  color: #ffffff;
+}
