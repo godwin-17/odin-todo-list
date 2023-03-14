@@ -36,6 +36,13 @@ class AllProjects {
   addProject(project) {
     this.projects.push(project);
   }
+
+  removeProject(project) {
+    const index = this.projects.indexOf(project);
+    if (index > - 1) {
+      this.projects.splice(index, 1);
+    }
+  }
 }
 
 export {Todo, Project, AllProjects};
