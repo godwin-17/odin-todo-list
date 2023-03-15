@@ -1,6 +1,8 @@
 import '../src/style.css';
-import {Todo, Project, AllProjects} from './modules/classes.js';
-import {asideBtns, addProject, projectPopup, closeProjectPopup, addTodo, todoPopup, closeTodoPopup, calendarProjects, sidebar, main, todoItemsContainer, projectInput, todoInputTitle, todoInputDescription, todoInputDate, mainTitleText, deleteProjectButton} from './modules/dom.js';
+import { Todo, Project, AllProjects} from './modules/classes.js';
+import { asideBtns, addProject, projectPopup, closeProjectPopup, addTodo, todoPopup, closeTodoPopup, calendarProjects, sidebar, main, todoItemsContainer, projectInput, todoInputTitle, todoInputDescription, todoInputDate, mainTitleText, deleteProjectButton } from './modules/dom.js';
+import { format } from 'date-fns';
+
 
 const allProjects = new AllProjects(); // Creating an Array of all projects
 
@@ -33,7 +35,7 @@ function displayDefaultTodo(defaultTodo) {
     </div>
 
     <div class="todo-details-2">
-      <input type="date" name="todo-date" class="todo-date" value=${defaultTodo.date}>
+      <div class="todo-date">${format(new Date(defaultTodo.date), 'do MMMM yyyy')}</div>
 
       <div class="delete-todo">
         &times;
@@ -175,7 +177,7 @@ todoPopup.addEventListener("submit", e => {
     </div>
 
     <div class="todo-details-2">
-      <input type="date" name="todo-date" class="todo-date" value=${todo.date}>
+      <div class="todo-date">${format(new Date(todo.date), 'do MMMM yyyy')}</div>
 
       <div class="delete-todo">
         &times;
@@ -229,8 +231,8 @@ sidebar.addEventListener("click", e => {
       </div>
   
       <div class="todo-details-2">
-        <input type="date" name="todo-date" class="todo-date" value=${todo.date}>
-  
+        <div class="todo-date">${format(new Date(todo.date), 'do MMMM yyyy')}</div>
+
         <div class="delete-todo">
           &times;
         </div>
