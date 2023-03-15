@@ -1,7 +1,7 @@
 import '../src/style.css';
 import { Todo, Project, AllProjects} from './modules/classes.js';
 import { asideBtns, addProject, projectPopup, closeProjectPopup, addTodo, todoPopup, closeTodoPopup, calendarProjects, sidebar, main, todoItemsContainer, projectInput, todoInputTitle, todoInputDescription, todoInputDate, mainTitleText, deleteProjectButton } from './modules/dom.js';
-import { format, isToday, parseISO } from 'date-fns';
+import { format, isToday, parseISO, isThisWeek, isThisMonth } from 'date-fns';
 
 
 const allProjects = new AllProjects(); // Creating an Array of all projects
@@ -242,36 +242,119 @@ sidebar.addEventListener("click", e => {
   }
 });
 
-// get today projects
 sidebar.addEventListener("click", e => {
-  const project = allProjects.projects;
-
   if (e.target.id === "today") {
-
-    todoItemsContainer.innerHTML = "";
-    mainTitleText.textContent = "Today";
-
-    console.log(project);
-    project.forEach(p => {
-      const todo = p.todos;
-      todo.forEach(t => {
-        console.log(isToday(parseISO(t.date)));
-        
-        if (isToday(parseISO(t.date))) {
-          todoItemsContainer.innerHTML += `
-            <div class="todo-item" data-todo-id=${t.id}>
-              <div class="todo-details">
-                <div class="todo-title">${t.title}</div>
-                <div class="todo-description">${t.description}</div>
-              </div>
-
-              <div class="todo-details-2">
-                <div class="todo-date">${format(new Date(t.date), 'do MMMM yyyy')}</div>
-              </div>
-            </div>
-          `;
-        }
-      });
-    })
+    getTodayTodos();
+  } else if (e.target.id === "week") {
+    getWeekTodos();
+  } else if (e.target.id === "month") {
+    getMonthTodos();
+  } else if (e.target.id === "all") {
+    getAllTodos();
   }
+
 });
+
+function getAllTodos() {
+  const project = allProjects.projects;
+  todoItemsContainer.innerHTML = "";
+  mainTitleText.textContent = "All Todos";
+
+  project.forEach(p => {
+    const todo = p.todos;
+    todo.forEach(t => {
+      todoItemsContainer.innerHTML += `
+      <div class="todo-item" data-todo-id=${t.id}>
+        <div class="todo-details">
+          <div class="todo-title">${t.title}</div>
+          <div class="todo-description">${t.description}</div>
+        </div>
+
+        <div class="todo-details-2">
+          <div class="todo-date">${format(new Date(t.date), 'do MMMM yyyy')}</div>
+        </div>
+      </div>
+    `;
+    });
+  });
+}
+
+function getMonthTodos() {
+  const project = allProjects.projects;
+  todoItemsContainer.innerHTML = "";
+  mainTitleText.textContent = "Month Todos";
+
+  project.forEach(p => {
+    const todo = p.todos;
+    todo.forEach(t => {
+      if (isThisMonth(parseISO(t.date))) {
+        todoItemsContainer.innerHTML += `
+        <div class="todo-item" data-todo-id=${t.id}>
+          <div class="todo-details">
+            <div class="todo-title">${t.title}</div>
+            <div class="todo-description">${t.description}</div>
+          </div>
+
+          <div class="todo-details-2">
+            <div class="todo-date">${format(new Date(t.date), 'do MMMM yyyy')}</div>
+          </div>
+        </div>
+      `;
+      }
+    });
+  });
+}
+
+function getWeekTodos() {
+  const project = allProjects.projects;
+  todoItemsContainer.innerHTML = "";
+  mainTitleText.textContent = "Week Todos";
+
+  project.forEach(p => {
+    const todo = p.todos;
+    todo.forEach(t => {
+      if (isThisWeek(parseISO(t.date), {weekStartsOn: 1})) {
+        todoItemsContainer.innerHTML += `
+        <div class="todo-item" data-todo-id=${t.id}>
+          <div class="todo-details">
+            <div class="todo-title">${t.title}</div>
+            <div class="todo-description">${t.description}</div>
+          </div>
+
+          <div class="todo-details-2">
+            <div class="todo-date">${format(new Date(t.date), 'do MMMM yyyy')}</div>
+          </div>
+        </div>
+      `;
+      }
+    });
+  });
+} 
+
+function getTodayTodos() {
+  const project = allProjects.projects;
+  todoItemsContainer.innerHTML = "";
+  mainTitleText.textContent = "Today Todos";
+  console.log(project);
+  project.forEach(p => {
+    const todo = p.todos;
+    todo.forEach(t => {
+      console.log(isToday(parseISO(t.date)));
+      
+      if (isToday(parseISO(t.date))) {
+        todoItemsContainer.innerHTML += `
+          <div class="todo-item" data-todo-id=${t.id}>
+            <div class="todo-details">
+              <div class="todo-title">${t.title}</div>
+              <div class="todo-description">${t.description}</div>
+            </div>
+
+            <div class="todo-details-2">
+              <div class="todo-date">${format(new Date(t.date), 'do MMMM yyyy')}</div>
+            </div>
+          </div>
+        `;
+      }
+    });
+  })
+}
