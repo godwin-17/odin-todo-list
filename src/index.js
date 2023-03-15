@@ -1,7 +1,7 @@
 import '../src/style.css';
 import { Todo, Project, AllProjects} from './modules/classes.js';
 import { asideBtns, addProject, projectPopup, closeProjectPopup, addTodo, todoPopup, closeTodoPopup, calendarProjects, sidebar, main, todoItemsContainer, projectInput, todoInputTitle, todoInputDescription, todoInputDate, mainTitleText, deleteProjectButton } from './modules/dom.js';
-import { format } from 'date-fns';
+import { format, isToday, parseISO } from 'date-fns';
 
 
 const allProjects = new AllProjects(); // Creating an Array of all projects
@@ -224,7 +224,7 @@ sidebar.addEventListener("click", e => {
     todoItemsContainer.innerHTML = "";
 
     project.todos.forEach(todo => {
-      todoItemsContainer.innerHTML += `<div class="todo-item">
+      todoItemsContainer.innerHTML += `<div class="todo-item" data-todo-id=${todo.id}>
       <div class="todo-details">
         <div class="todo-title">${todo.title}</div>
         <div class="todo-description">${todo.description}</div>
@@ -232,12 +232,46 @@ sidebar.addEventListener("click", e => {
   
       <div class="todo-details-2">
         <div class="todo-date">${format(new Date(todo.date), 'do MMMM yyyy')}</div>
-
+  
         <div class="delete-todo">
           &times;
         </div>
       </div>
     </div>`;
     });
+  }
+});
+
+// get today projects
+sidebar.addEventListener("click", e => {
+  const project = allProjects.projects;
+
+  if (e.target.id === "today") {
+
+    todoItemsContainer.innerHTML = "";
+    mainTitleText.textContent = "Today";
+
+    console.log(project);
+    project.forEach(p => {
+      const todo = p.todos;
+      todo.forEach(t => {
+        console.log(isToday(parseISO(t.date)));
+        
+        if (isToday(parseISO(t.date))) {
+          todoItemsContainer.innerHTML += `
+            <div class="todo-item" data-todo-id=${t.id}>
+              <div class="todo-details">
+                <div class="todo-title">${t.title}</div>
+                <div class="todo-description">${t.description}</div>
+              </div>
+
+              <div class="todo-details-2">
+                <div class="todo-date">${format(new Date(t.date), 'do MMMM yyyy')}</div>
+              </div>
+            </div>
+          `;
+        }
+      });
+    })
   }
 });
