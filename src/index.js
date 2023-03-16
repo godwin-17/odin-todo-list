@@ -2,6 +2,7 @@ import '../src/style.css';
 import { Todo, Project, AllProjects} from './modules/classes.js';
 import { asideBtns, addProject, projectPopup, closeProjectPopup, addTodo, todoPopup, closeTodoPopup, calendarProjects, sidebar, main, todoItemsContainer, projectInput, todoInputTitle, todoInputDescription, todoInputDate, mainTitleText, deleteProjectButton } from './modules/dom.js';
 import { format, isToday, parseISO, isThisWeek, isThisMonth } from 'date-fns';
+import { parse, stringify, toJSON, fromJSON } from 'flatted';
 
 
 const allProjects = new AllProjects(); // Creating an Array of all projects
@@ -14,7 +15,7 @@ allProjects.addProject(DefaultProject);
 mainTitleText.textContent = "Default";
 
 let currentProject = null;
-
+loadFromLocalStorage();
 function displayDefaultProject() {
   const newProject = document.createElement("div");
   newProject.classList.add("project-item");
@@ -24,7 +25,7 @@ function displayDefaultProject() {
   calendarProjects.insertAdjacentElement("afterend", newProject);
 }
 
-displayDefaultProject();
+// displayDefaultProject();
 
 function displayDefaultTodo(defaultTodo) {
   todoItemsContainer.innerHTML += `
@@ -44,7 +45,7 @@ function displayDefaultTodo(defaultTodo) {
   </div>
   `;
 }
-displayDefaultTodo(DefaultTodo);
+// displayDefaultTodo(DefaultTodo);
 
 function setCurrentProject (projectName) {
   currentProject = projectName.name;
@@ -128,6 +129,7 @@ projectPopup.addEventListener("submit", e => {
   projectPopup.style.display = "none";
   projectInput.value = "";
   alert("Project created successfully!");
+  saveToLocalStorage();
 });
 
 // TO DELETE A PROJECT
@@ -190,6 +192,7 @@ todoPopup.addEventListener("submit", e => {
   todoInputTitle.value = "";
   todoInputDescription.value = "";
   todoInputDate.value = "";
+  saveToLocalStorage();
 });
 
 // Delete todo
@@ -357,4 +360,41 @@ function getTodayTodos() {
       }
     });
   })
+}
+
+function saveToLocalStorage() {
+  const projects = allProjects;
+  console.log(projects);
+  const JSON = localStorage.setItem("Projects", stringify(projects));
+
+  const data = localStorage.getItem("Projects");
+
+  console.log(data);
+
+  const parsedData = parse(data);
+  
+  console.log(parsedData);
+}
+
+saveToLocalStorage();
+
+function loadFromLocalStorage() {
+  const projectsJSON = localStorage.getItem('allProjects');
+  if (projectsJSON) {
+    const projectsData = fromJSON(parse(projectsJSON));
+    allProjects.projects = projectsData;
+    allProjects.projects.forEach((project) => {
+      const newProject = document.createElement('div');
+      newProject.classList.add('project-item');
+      newProject.innerHTML = `${project.name}`;
+      calendarProjects.insertAdjacentElement('afterend', newProject);
+      setDataAttribute();
+      project.todos.forEach((todo) => {
+        displayTodoItem(todo);
+      });
+    });
+  } else {
+    displayDefaultProject();
+    displayDefaultTodo(DefaultTodo);
+  }
 }
