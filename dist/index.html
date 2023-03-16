@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="shortcut icon" type="image/x-icon" href="./images/favicon.ico">
   <title>Todo List</title>
 <script defer src="main.js"></script><link href="style.css" rel="stylesheet"></head>
 <body>
@@ -48,12 +49,47 @@
         <div class="add-project-text">Add project</div>
       </div>
       
+      <div id="project-popup">
+        <form id="project-from">
+          <input type="text" name="project" id="project" placeholder="Project Name">
+          
+          <div id="project-btns">
+            <input type="submit" value="Add Project">
+            <div id="close-popup">Close</div>
+          </div>
+        </form>
+      </div>
     </div>
 
+    <div id="todo-popup">
+      <form id="todo-form">
+        <div id="close-todo">&times;</div>
+        <label for="title">Title</label>
+        <input type="text" name="title" id="title" placeholder="Title">
+        <label for="description">Description</label>
+        <input type="text" name="description" id="description" placeholder="Description">
+        <label for="date">Date</label>
+        <input type="date" name="date" id="date">
+        <button type="submit">Add Todo</button>
+      </form>
+    </div>
+
+    <div id="add-todo">
+      <img src="images/add.png" alt="Add Icon" class="todo-icon">
+      <div class="add-todo-text">Add todo</div>
+    </div>
+
+    <button id="delete-project-button">Delete Project</button>
   </aside>
 
   <main>
+    <div class="main-title-text">
 
+    </div>
+
+    <div class="todo-items-container">
+      
+    </div>
   </main>
 </body>
 </html>
