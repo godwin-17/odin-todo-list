@@ -142,11 +142,12 @@ deleteProjectButton.addEventListener("click", () => {
   const project = allProjects.projects.find(p => p.name === currentProject);
   allProjects.removeProject(project);
 
-  document.querySelector(`[data-project=${currentProject}]`).remove();
+  document.querySelector(`[data-project="${currentProject}"]`).remove();
   
   mainTitleText.textContent = "";
   todoItemsContainer.innerHTML = "";
   currentProject = null;
+  saveToLocalStorage();
 });
 
 closeProjectPopup.addEventListener("click", () => {
@@ -210,7 +211,7 @@ todoItemsContainer.addEventListener("click", e => {
   todoItem.remove();
   console.log("PROJECT", project);
   }
-
+  saveToLocalStorage();
 });
 
 closeTodoPopup.addEventListener("click", () => {
@@ -393,6 +394,7 @@ function loadFromLocalStorage() {
         displayTodoItem(todo);
       });
     });
+    saveToLocalStorage();
   } else {
     displayDefaultProject();
     displayDefaultTodo(DefaultTodo);
