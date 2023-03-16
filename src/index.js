@@ -67,8 +67,6 @@ sidebar.addEventListener("click", e => {
     const project = e.target.dataset.project;
 
     currentProject = project;
-
-    console.log(`Current project: ${currentProject}`);
   }
 });
 
@@ -96,7 +94,6 @@ projectPopup.addEventListener("submit", e => {
     alert("Project name can't be empty");
     return;
   }
-  console.log(allProjects);
 
   const projectExists = allProjects.projects.some(project => {
     return project.name.trim() === projectInput.value.trim();
@@ -117,8 +114,6 @@ projectPopup.addEventListener("submit", e => {
   setCurrentProject(myProject);
 
   calendarProjects.insertAdjacentElement("afterend", newProject);
-  console.log("Project Created", myProject);
-  console.log("CURRENT", currentProject);
 
   setDataAttribute();
 
@@ -128,7 +123,6 @@ projectPopup.addEventListener("submit", e => {
 
   projectPopup.style.display = "none";
   projectInput.value = "";
-  alert("Project created successfully!");
   saveToLocalStorage();
 });
 
@@ -187,7 +181,6 @@ todoPopup.addEventListener("submit", e => {
       </div>
     </div>
   </div>`;
-  console.log("Todo", todo);
 
   todoPopup.style.display = "none";
   todoInputTitle.value = "";
@@ -200,7 +193,7 @@ todoPopup.addEventListener("submit", e => {
 todoItemsContainer.addEventListener("click", e => {
 
   const deleteButton = e.target.closest(".delete-todo");
-  console.log("DELETE BUTTON", deleteButton);
+
   if (deleteButton) {
   const todoItem = deleteButton.closest(".todo-item");
   const clickedTodoId = parseInt(todoItem.getAttribute("data-todo-id"));
@@ -209,7 +202,6 @@ todoItemsContainer.addEventListener("click", e => {
   project.removeTodo(clickedTodo);
 
   todoItem.remove();
-  console.log("PROJECT", project);
   }
   saveToLocalStorage();
 });
@@ -339,11 +331,10 @@ function getTodayTodos() {
   const project = allProjects.projects;
   todoItemsContainer.innerHTML = "";
   mainTitleText.textContent = "Today Todos";
-  console.log(project);
+
   project.forEach(p => {
     const todo = p.todos;
     todo.forEach(t => {
-      console.log(isToday(parseISO(t.date)));
       
       if (isToday(parseISO(t.date))) {
         todoItemsContainer.innerHTML += `
@@ -365,16 +356,12 @@ function getTodayTodos() {
 
 function saveToLocalStorage() {
   const projects = allProjects;
-  console.log(projects);
+
   const JSON = localStorage.setItem("Projects", stringify(projects));
 
   const data = localStorage.getItem("Projects");
 
-  console.log(data);
-
   const parsedData = parse(data);
-  
-  console.log(parsedData);
 }
 
 saveToLocalStorage();
