@@ -5,17 +5,17 @@ import { format, isToday, parseISO, isThisWeek, isThisMonth } from 'date-fns';
 import { parse, stringify, toJSON, fromJSON } from 'flatted';
 
 
-const allProjects = new AllProjects(); // Creating an Array of all projects
+let allProjects = new AllProjects(); // Creating an Array of all projects
 
 // Setting up default Project and Todo
 const DefaultProject = new Project("Default");
 const DefaultTodo = new Todo("Example", "This is an example of a todo.", "2023-03-11", DefaultProject);
 DefaultProject.addTodo(DefaultTodo);
 allProjects.addProject(DefaultProject);
-mainTitleText.textContent = "Default";
 
 let currentProject = null;
 loadFromLocalStorage();
+
 function displayDefaultProject() {
   const newProject = document.createElement("div");
   newProject.classList.add("project-item");
@@ -50,6 +50,8 @@ function displayDefaultTodo(defaultTodo) {
 function setCurrentProject (projectName) {
   currentProject = projectName.name;
 }
+
+mainTitleText.textContent = currentProject;
 
 // Set Data Attribute
 function setDataAttribute() {
@@ -367,23 +369,53 @@ function saveToLocalStorage() {
 saveToLocalStorage();
 
 function loadFromLocalStorage() {
-  const projectsJSON = localStorage.getItem('allProjects');
-  if (projectsJSON) {
-    const projectsData = fromJSON(parse(projectsJSON));
-    allProjects.projects = projectsData;
-    allProjects.projects.forEach((project) => {
-      const newProject = document.createElement('div');
+
+  const projectJSON = localStorage.getItem('Projects');
+  
+  if (projectJSON) {
+    const projectData = parse(projectJSON);
+       
+    allProjects = projectData;
+
+    // Convert objects to instances of Project and AllProjects
+    allProjects = Object.assign(new AllProjects(), projectData);
+    allProjects.projects = allProjects.projects.map(projectItem => {
+      const project = Object.assign(new Project(), projectItem);
+      project.todos = project.todos.map(todoItem => Object.assign(new Todo(), todoItem));
+      return project;
+    });
+
+    // Set prototype of instances to the classes
+    Object.setPrototypeOf(allProjects, AllProjects.prototype);
+    allProjects.projects.forEach(project => Object.setPrototypeOf(project, Project.prototype));
+
+    allProjects.projects.forEach(project => {
+      const newProject = document.createElement('div'); 
       newProject.classList.add('project-item');
       newProject.innerHTML = `${project.name}`;
       calendarProjects.insertAdjacentElement('afterend', newProject);
       setDataAttribute();
-      project.todos.forEach((todo) => {
+
+      project.todos.forEach(todo => {
         displayTodoItem(todo);
       });
-    });
-    saveToLocalStorage();
+    })
   } else {
     displayDefaultProject();
     displayDefaultTodo(DefaultTodo);
   }
+}
+
+function displayTodoItem(todo) {
+  todoItemsContainer.innerHTML += `
+  <div class="todo-item" data-todo-id=${todo.id}>
+    <div class="todo-details">
+      <div class="todo-title">${todo.title}</div>
+      <div class="todo-description">${todo.description}</div>
+    </div>
+
+    <div class="todo-details-2">
+      <div class="todo-date">${format(new Date(todo.date), 'do MMMM yyyy')}</div>
+    </div>
+  </div>`;
 }
